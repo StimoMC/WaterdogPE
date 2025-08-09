@@ -52,7 +52,7 @@ public abstract class AbstractUpstreamHandler implements BedrockPacketHandler {
 
     @Override
     public final PacketSignal handle(PacketViolationWarningPacket packet) {
-        if (packet.getPacketCauseId() != 156 && !packet.getPacketType().equals(BedrockPacketType.UNKNOWN)) {
+        if (!packet.getContext().equalsIgnoreCase("Server sent a ContainerClosePacket response packet when it should have sent the server initiated packet")) {
             this.player.getLogger().warning("Received violation from " + this.player.getName() + ": " + packet.toString());
             return this.cancel();
         }
