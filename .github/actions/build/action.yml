@@ -34,7 +34,6 @@ runs:
           }]
 
     - name: Build
-      if: ${{ inputs.perform_deploy == 'false' }}
       run: mvn -B package --file pom.xml
       shell: bash
 

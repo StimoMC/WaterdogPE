@@ -25,9 +25,12 @@ jobs:
           create_prerelease: false # Use custom release step
 
       - name: Create release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
           files: |
             target/Waterdog.jar
+          draft: false
+          prerelease: false
