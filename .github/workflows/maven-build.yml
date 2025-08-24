@@ -10,8 +10,6 @@ on:
 
 jobs:
   build:
-    env:
-      DOCKER_DEPLOY: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/waterdog-2' }}
     runs-on: ubuntu-latest
     permissions:
       packages: write
