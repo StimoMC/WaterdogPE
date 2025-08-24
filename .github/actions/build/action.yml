@@ -5,18 +5,6 @@ inputs:
   repo_token:
     description: "GitHub secret token"
     required: true
-  perform_deploy:
-    description: "Whether to deploy to maven repository"
-    required: true
-  deploy_repository:
-    description: "The maven repository name to deploy"
-    required: true
-  deploy_username:
-    description: "A username to access maven repository"
-    required: true
-  deploy_password:
-    description: "A password of a maven repository user"
-    required: true
   create_prerelease:
     description: "Create a pre release build"
     required: true
@@ -48,11 +36,6 @@ runs:
     - name: Build
       if: ${{ inputs.perform_deploy == 'false' }}
       run: mvn -B package --file pom.xml
-      shell: bash
-
-    - name: Build and Deploy
-      if: ${{ inputs.perform_deploy == 'true' }}
-      run: mvn -B package deploy --file pom.xml
       shell: bash
 
     - name: Upload artifacts
