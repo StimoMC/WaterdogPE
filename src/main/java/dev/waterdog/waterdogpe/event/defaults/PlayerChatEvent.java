@@ -17,6 +17,7 @@ package dev.waterdog.waterdogpe.event.defaults;
 
 import dev.waterdog.waterdogpe.event.CancellableEvent;
 import dev.waterdog.waterdogpe.player.ProxiedPlayer;
+import net.kyori.adventure.text.Component;
 
 /**
  * Called before a player sends a message to the chat.
@@ -24,18 +25,18 @@ import dev.waterdog.waterdogpe.player.ProxiedPlayer;
  */
 public class PlayerChatEvent extends PlayerEvent implements CancellableEvent {
 
-    private String message;
+    private Component message;
 
-    public PlayerChatEvent(ProxiedPlayer player, String message) {
+    public PlayerChatEvent(ProxiedPlayer player, Component message) {
         super(player);
         this.message = message;
     }
 
-    public String getMessage() {
+    public Component getMessage() {
         return this.message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(Component message) {
         this.message = message;
     }
 }

@@ -8,6 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import io.netty.util.internal.PlatformDependent;
 import lombok.extern.log4j.Log4j2;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockBatchWrapper;
 
 import java.util.Queue;
@@ -75,7 +76,7 @@ public class PacketQueueHandler extends ChannelDuplexHandler {
         } else {
             log.warn("[{}] has reached maximum transfer queue capacity: batches={} packets={}", this.session.getSocketAddress(), this.queue.size(), this.packetCounter);
             this.finish(ctx, false);
-            this.session.disconnect("Transfer queue got too large");
+            this.session.disconnect(Component.text("Transfer queue got too large"));
 
             NetworkMetrics metrics = ctx.channel().attr(NetworkMetrics.ATTRIBUTE).get();
             if (metrics != null) {

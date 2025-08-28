@@ -26,6 +26,7 @@ import dev.waterdog.waterdogpe.network.protocol.user.HandshakeEntry;
 import dev.waterdog.waterdogpe.network.protocol.user.HandshakeUtils;
 import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 import dev.waterdog.waterdogpe.security.SecurityManager;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.compat.BedrockCompat;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacketHandler;
@@ -58,7 +59,7 @@ public class LoginUpstreamHandler implements BedrockPacketHandler {
     private void onLoginFailed(HandshakeEntry handshakeEntry, Throwable throwable, String disconnectReason) {
         String message = this.proxy.getSecurityManager().onLoginFailed(this.session.getSocketAddress(), handshakeEntry, throwable, disconnectReason);
         if (this.session.isConnected()) {
-            this.session.disconnect(Objects.requireNonNullElse(message, "Login Failed"));
+            this.session.disconnect(Component.text(Objects.requireNonNullElse(message, "Login Failed")));
         }
     }
 
@@ -71,7 +72,7 @@ public class LoginUpstreamHandler implements BedrockPacketHandler {
         SecurityManager securityManager = this.proxy.getSecurityManager();
         if (!securityManager.onLoginAttempt(this.session.getSocketAddress())) {
             this.proxy.getLogger().debug("[{}] <-> Login denied", this.session.getSocketAddress());
-            this.session.disconnect("Login denied");
+            this.session.disconnect(Component.text("Login denied"));
             return false;
         }
         return true;
@@ -103,7 +104,7 @@ public class LoginUpstreamHandler implements BedrockPacketHandler {
         this.session.setCodec(protocol.getCodec());
 
         if (protocol.isBefore(ProtocolVersion.MINECRAFT_PE_1_19_30)) {
-            this.session.disconnect("Illegal packet");
+            this.session.disconnect(Component.text("Illegal packet"));
             this.proxy.getLogger().warning("[{}] <-> Upstream has requested network settings, but its version doesn't support it (protocol={})", this.session.getSocketAddress(), protocol.getProtocol());
             return PacketSignal.HANDLED;
         }
@@ -135,7 +136,7 @@ public class LoginUpstreamHandler implements BedrockPacketHandler {
 
         if (protocol.isAfterOrEqual(ProtocolVersion.MINECRAFT_PE_1_19_30) && this.compression == null) {
             this.proxy.getLogger().warning("[{}] <-> Upstream has not requested network settings (protocol={})", this.session.getSocketAddress(), protocol.getProtocol());
-            this.session.disconnect("Wrong login flow");
+            this.session.disconnect(Component.text("Wrong login flow"));
             return PacketSignal.HANDLED;
         } else if (this.compression == null) {
             this.compression = CompressionType.ZLIB;
@@ -168,7 +169,7 @@ public class LoginUpstreamHandler implements BedrockPacketHandler {
             PlayerAuthenticatedEvent loginEvent = new PlayerAuthenticatedEvent(ProxiedPlayer.class, loginData, (InetSocketAddress) this.session.getSocketAddress());
             this.proxy.getEventManager().callEvent(loginEvent);
             if (loginEvent.isCancelled()) {
-                this.session.disconnect(loginEvent.getCancelReason());
+                this.session.disconnect(Component.text(loginEvent.getCancelReason()));
                 return PacketSignal.HANDLED;
             }
 

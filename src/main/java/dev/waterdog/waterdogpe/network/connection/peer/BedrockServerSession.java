@@ -23,6 +23,7 @@ import dev.waterdog.waterdogpe.network.protocol.handler.ProxyBatchBridge;
 import dev.waterdog.waterdogpe.network.protocol.handler.ProxyPacketHandler;
 import io.netty.channel.ChannelPipeline;
 import lombok.extern.log4j.Log4j2;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.bedrock.BedrockDisconnectReasons;
 import org.cloudburstmc.protocol.bedrock.BedrockPeer;
 import org.cloudburstmc.protocol.bedrock.BedrockSession;
@@ -77,7 +78,7 @@ public class BedrockServerSession extends BedrockSession implements ProxiedConne
     }
 
     @Override
-    public void disconnect(String reason, boolean hideReason) {
+    public void disconnect(Component reason, boolean hideReason) {
         this.checkForClosed();
 
         DisconnectPacket packet = new DisconnectPacket();
@@ -128,7 +129,7 @@ public class BedrockServerSession extends BedrockSession implements ProxiedConne
         return this.packetHandler;
     }
 
-    public void addDisconnectListener(Consumer<String> listener) {
+    public void addDisconnectListener(Consumer<Component> listener) {
         this.getPeer().getChannel().closeFuture().addListener(future -> listener.accept(this.getDisconnectReason()));
     }
 

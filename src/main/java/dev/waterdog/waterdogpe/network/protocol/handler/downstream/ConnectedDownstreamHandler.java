@@ -94,10 +94,10 @@ public class ConnectedDownstreamHandler extends AbstractDownstreamHandler {
 
     @Override
     public final PacketSignal handle(DisconnectPacket packet) {
-        if (this.player.sendToFallback(this.connection.getServerInfo(), ReconnectReason.SERVER_KICK, packet.getKickMessage())) {
+        if (this.player.sendToFallback(this.connection.getServerInfo(), ReconnectReason.SERVER_KICK, packet.getKickMessage().toString())) {
             return Signals.CANCEL;
         }
-        this.player.disconnect(new TranslationContainer("waterdog.downstream.kicked", packet.getKickMessage()));
+        this.player.disconnect(new TranslationContainer("waterdog.downstream.kicked", packet.getKickMessage().toString()));
         return Signals.CANCEL;
     }
 }

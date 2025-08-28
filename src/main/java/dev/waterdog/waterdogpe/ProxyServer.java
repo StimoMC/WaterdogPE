@@ -61,6 +61,7 @@ import io.netty.channel.epoll.Epoll;
 import io.netty.channel.unix.UnixChannelOption;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.cubespace.Yamler.Config.InvalidConfigurationException;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.netty.channel.raknet.RakChannelFactory;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 import org.cloudburstmc.protocol.common.util.Preconditions;
@@ -328,7 +329,7 @@ public class ProxyServer {
         String disconnectReason = new TranslationContainer("waterdog.server.shutdown").getTranslated();
         for (Map.Entry<UUID, ProxiedPlayer> player : this.playerManager.getPlayers().entrySet()) {
             this.logger.info("Disconnecting " + player.getValue().getName());
-            player.getValue().disconnect(disconnectReason);
+            player.getValue().disconnect(Component.text(disconnectReason));
         }
         Thread.sleep(500); // Give small delay to send packet
 

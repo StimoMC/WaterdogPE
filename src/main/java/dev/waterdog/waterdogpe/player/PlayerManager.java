@@ -17,6 +17,7 @@ package dev.waterdog.waterdogpe.player;
 
 import dev.waterdog.waterdogpe.ProxyServer;
 import dev.waterdog.waterdogpe.utils.types.Permission;
+import net.kyori.adventure.text.Component;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +45,7 @@ public class PlayerManager {
 
         ProxiedPlayer previousSession = this.players.remove(player.getUniqueId());
         if (previousSession != null && previousSession.getConnection().isConnected()) {
-            previousSession.disconnect("disconnectionScreen.loggedinOtherLocation");
+            previousSession.disconnect(Component.text("disconnectionScreen.loggedinOtherLocation"));
         }
         this.players.put(player.getUniqueId(), player);
         return true;

@@ -15,6 +15,7 @@
 
 package dev.waterdog.waterdogpe.network.protocol.handler.upstream;
 
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import dev.waterdog.waterdogpe.event.defaults.PlayerResourcePackApplyEvent;
 import dev.waterdog.waterdogpe.packs.PackManager;
@@ -42,13 +43,13 @@ public class ResourcePacksHandler extends AbstractUpstreamHandler {
 
         switch (packet.getStatus()) {
             case REFUSED:
-                this.player.disconnect("disconnectionScreen.noReason");
+                this.player.disconnect(Component.text("disconnectionScreen.noReason"));
                 break;
             case SEND_PACKS:
                 for (String packIdVer : packet.getPackIds()) {
                     ResourcePackDataInfoPacket response = packManager.packInfoFromIdVer(packIdVer);
                     if (response == null) {
-                        this.player.disconnect("disconnectionScreen.resourcePack");
+                        this.player.disconnect(Component.text("disconnectionScreen.resourcePack"));
                         break;
                     }
                     this.pendingPacks.offer(response);
@@ -75,7 +76,7 @@ public class ResourcePacksHandler extends AbstractUpstreamHandler {
         PackManager packManager = this.player.getProxy().getPackManager();
         ResourcePackChunkDataPacket response = packManager.packChunkDataPacket(packet.getPackId() + "_" + packet.getPackVersion(), packet);
         if (response == null) {
-            this.player.disconnect("Unknown resource pack!");
+            this.player.disconnect(Component.text("Unknown resource pack!"));
         } else {
             this.player.sendPacket(response);
             if (this.sendingPack != null && (packet.getChunkIndex() + 1) >= this.sendingPack.getChunkCount()) {

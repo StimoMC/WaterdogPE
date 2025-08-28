@@ -17,6 +17,7 @@ package dev.waterdog.waterdogpe.event.defaults;
 
 import dev.waterdog.waterdogpe.event.AsyncEvent;
 import dev.waterdog.waterdogpe.player.ProxiedPlayer;
+import net.kyori.adventure.text.Component;
 
 /**
  * Called whenever a player gets kicked from the Server (ProxiedPlayer#disconnect)
@@ -24,14 +25,14 @@ import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 @AsyncEvent
 public class PlayerDisconnectedEvent extends PlayerEvent {
 
-    private final String reason;
+    private final Component reason;
 
-    public PlayerDisconnectedEvent(ProxiedPlayer player, String reason) {
+    public PlayerDisconnectedEvent(ProxiedPlayer player, Component reason) {
         super(player);
         this.reason = reason;
     }
 
-    public String getReason() {
+    public Component getReason() {
         return this.reason;
     }
 }

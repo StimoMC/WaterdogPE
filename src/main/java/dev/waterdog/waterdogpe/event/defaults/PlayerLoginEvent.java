@@ -18,6 +18,7 @@ package dev.waterdog.waterdogpe.event.defaults;
 import dev.waterdog.waterdogpe.event.AsyncEvent;
 import dev.waterdog.waterdogpe.event.CancellableEvent;
 import dev.waterdog.waterdogpe.player.ProxiedPlayer;
+import net.kyori.adventure.text.Component;
 
 /**
  * Called right before the initial connect is made.
@@ -26,17 +27,17 @@ import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 @AsyncEvent
 public class PlayerLoginEvent extends PlayerEvent implements CancellableEvent {
 
-    private String cancelReason = "Login cancelled";
+    private Component cancelReason = Component.text("Login cancelled");
 
     public PlayerLoginEvent(ProxiedPlayer player) {
         super(player);
     }
 
-    public String getCancelReason() {
+    public Component getCancelReason() {
         return this.cancelReason;
     }
 
-    public void setCancelReason(String cancelReason) {
+    public void setCancelReason(Component cancelReason) {
         this.cancelReason = cancelReason;
     }
 }

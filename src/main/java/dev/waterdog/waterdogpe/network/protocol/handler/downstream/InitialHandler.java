@@ -22,6 +22,7 @@ import dev.waterdog.waterdogpe.network.protocol.registry.FakeDefinitionRegistry;
 import dev.waterdog.waterdogpe.network.protocol.user.HandshakeUtils;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -114,7 +115,7 @@ public class InitialHandler extends AbstractDownstreamHandler {
         rewriteData.setSpawnPosition(packet.getPlayerPosition());
         packet.setRuntimeEntityId(rewriteData.getEntityId());
         packet.setUniqueEntityId(rewriteData.getEntityId());
-        packet.setLevelName(rewriteData.getProxyName());
+        packet.setLevelName(Component.text(rewriteData.getProxyName()));
 
         // Starting with 419 server does not send vanilla blocks to client
         if (this.player.getProtocol().isBeforeOrEqual(ProtocolVersion.MINECRAFT_PE_1_16_20)) {

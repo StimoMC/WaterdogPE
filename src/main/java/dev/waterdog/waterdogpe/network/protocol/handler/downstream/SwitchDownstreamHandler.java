@@ -21,6 +21,7 @@ import dev.waterdog.waterdogpe.network.protocol.handler.TransferCallback;
 import dev.waterdog.waterdogpe.network.protocol.user.HandshakeUtils;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import lombok.extern.log4j.Log4j2;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.ScoreInfo;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -115,7 +116,7 @@ public class SwitchDownstreamHandler extends AbstractDownstreamHandler {
 
         if (!this.player.isConnected()) {
             this.connection.disconnect();
-            this.player.disconnect("transfer disconnected");
+            this.player.disconnect(Component.text("transfer disconnected"));
             return Signals.CANCEL;
         }
 
@@ -232,7 +233,7 @@ public class SwitchDownstreamHandler extends AbstractDownstreamHandler {
         }
 
         this.connection.disconnect();
-        this.player.sendMessage(new TranslationContainer("waterdog.downstream.transfer.failed", this.connection.getServerInfo().getServerName(), packet.getKickMessage()));
+        this.player.sendMessage(new TranslationContainer("waterdog.downstream.transfer.failed", this.connection.getServerInfo().getServerName(), packet.getKickMessage().toString()));
         return Signals.CANCEL;
     }
 }
