@@ -24,6 +24,7 @@ import dev.waterdog.waterdogpe.network.serverinfo.ServerInfo;
 import dev.waterdog.waterdogpe.network.protocol.rewrite.types.RewriteData;
 import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 import dev.waterdog.waterdogpe.utils.types.TranslationContainer;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.packet.SetLocalPlayerAsInitializedPacket;
 import org.cloudburstmc.protocol.bedrock.packet.StopSoundPacket;
@@ -121,9 +122,9 @@ public class TransferCallback {
 
     public void onTransferFailed() {
         if (this.player.sendToFallback(this.targetServer, ReconnectReason.TRANSFER_FAILED, "Disconnected")) {
-            this.player.sendMessage(new TranslationContainer("waterdog.connected.fallback", this.targetServer.getServerName()));
+            this.player.sendMessage(Component.text(new TranslationContainer("waterdog.connected.fallback", this.targetServer.getServerName()).getTranslated()));
         } else {
-            this.player.disconnect(new TranslationContainer("waterdog.downstream.transfer.failed", targetServer.getServerName(), "Server was closed"));
+            this.player.disconnect(Component.text(new TranslationContainer("waterdog.downstream.transfer.failed", targetServer.getServerName(), "Server was closed").getTranslated()));
         }
 
         this.connection.disconnect();

@@ -21,6 +21,7 @@ import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 import dev.waterdog.waterdogpe.utils.types.TranslationContainer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.netty.channel.raknet.RakDisconnectReason;
 
 public class ClientEventHandler extends ChannelInboundHandlerAdapter {
@@ -61,9 +62,9 @@ public class ClientEventHandler extends ChannelInboundHandlerAdapter {
 
         TranslationContainer msg = new TranslationContainer("waterdog.downstream.down", this.connection.getServerInfo().getServerName(), cause.getMessage());
         if (this.player.sendToFallback(this.connection.getServerInfo(), ReconnectReason.EXCEPTION, cause.getMessage())) {
-            this.player.sendMessage(msg);
+            this.player.sendMessage(Component.text(msg.getTranslated()));
         } else {
-            this.player.disconnect(msg);
+            this.player.disconnect(Component.text(msg.getTranslated()));
         }
     }
 }

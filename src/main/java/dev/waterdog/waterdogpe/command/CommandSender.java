@@ -17,6 +17,7 @@ package dev.waterdog.waterdogpe.command;
 
 import dev.waterdog.waterdogpe.ProxyServer;
 import dev.waterdog.waterdogpe.utils.types.TextContainer;
+import net.kyori.adventure.text.Component;
 
 /**
  * Base interface for all instances that are able to issue commands.
@@ -29,9 +30,7 @@ public interface CommandSender {
 
     boolean hasPermission(String permission);
 
-    void sendMessage(String message);
-
-    void sendMessage(TextContainer message);
+    void sendMessage(Component message);
 
     ProxyServer getProxy();
 }

@@ -20,6 +20,7 @@ import dev.waterdog.waterdogpe.utils.types.TextContainer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import dev.waterdog.waterdogpe.utils.types.TranslationContainer;
+import net.kyori.adventure.text.Component;
 
 import java.util.Locale;
 
@@ -113,7 +114,7 @@ public class SimpleCommandMap implements CommandMap {
         }
 
         if (!sender.isPlayer()) { // Player commands may be handled by servers
-            sender.sendMessage(new TranslationContainer("waterdog.command.unknown"));
+            sender.sendMessage(Component.text(new TranslationContainer("waterdog.command.unknown").getMessage()));
         }
         return false;
     }
@@ -121,14 +122,14 @@ public class SimpleCommandMap implements CommandMap {
     private void execute(Command command, CommandSender sender, String alias, String[] args) {
         boolean permission = sender.hasPermission(command.getPermission());
         if (!permission) {
-            sender.sendMessage(new TextContainer(command.getPermissionMessage(), command.getName(), command.getPermission()));
+            sender.sendMessage(Component.text(new TextContainer(command.getPermissionMessage(), command.getName(), command.getPermission()).getMessage()));
             return;
         }
 
         try {
             boolean success = command.onExecute(sender, alias, args);
             if (!success) {
-                sender.sendMessage("§cCommand usage: " + command.getUsageMessage());
+                sender.sendMessage(Component.text("§cCommand usage: " + command.getUsageMessage()));
             }
         } catch (Exception e) {
             this.proxy.getLogger().error("Error appeared while processing command!", e);

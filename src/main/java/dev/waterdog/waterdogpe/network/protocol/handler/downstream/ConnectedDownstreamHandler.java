@@ -19,6 +19,7 @@ import dev.waterdog.waterdogpe.network.connection.client.ClientConnection;
 import dev.waterdog.waterdogpe.network.connection.handler.ReconnectReason;
 import dev.waterdog.waterdogpe.network.protocol.ProtocolVersion;
 import dev.waterdog.waterdogpe.network.protocol.handler.PluginPacketHandler;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.bedrock.PacketDirection;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import dev.waterdog.waterdogpe.event.defaults.FastTransferRequestEvent;
@@ -97,7 +98,7 @@ public class ConnectedDownstreamHandler extends AbstractDownstreamHandler {
         if (this.player.sendToFallback(this.connection.getServerInfo(), ReconnectReason.SERVER_KICK, packet.getKickMessage().toString())) {
             return Signals.CANCEL;
         }
-        this.player.disconnect(new TranslationContainer("waterdog.downstream.kicked", packet.getKickMessage().toString()));
+        this.player.disconnect(Component.text(new TranslationContainer("waterdog.downstream.kicked", packet.getKickMessage().toString()).getTranslated()));
         return Signals.CANCEL;
     }
 }

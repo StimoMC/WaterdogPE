@@ -21,6 +21,7 @@ import dev.waterdog.waterdogpe.command.CommandSettings;
 import dev.waterdog.waterdogpe.network.serverinfo.ServerInfo;
 import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 import dev.waterdog.waterdogpe.utils.types.TextContainer;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOverloadData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParamData;
@@ -43,7 +44,7 @@ public class SendCommand extends Command {
 
         ServerInfo server = sender.getProxy().getServerInfo(args[0]);
         if (server == null) {
-            sender.sendMessage(new TextContainer("§cServer {%0} was not found!", args[0]));
+            sender.sendMessage(Component.text(new TextContainer("§cServer {%0} was not found!", args[0]).getMessage()));
             return true;
         }
 
@@ -55,7 +56,7 @@ public class SendCommand extends Command {
         }
 
         if (targetServer == null) {
-            sender.sendMessage(new TextContainer("§cCould not find target server {%0}!", args[1]));
+            sender.sendMessage(Component.text(new TextContainer("§cCould not find target server {%0}!", args[1]).getMessage()));
             return true;
         }
 

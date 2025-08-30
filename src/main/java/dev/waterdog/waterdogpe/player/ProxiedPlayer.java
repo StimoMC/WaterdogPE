@@ -136,7 +136,7 @@ public class ProxiedPlayer implements CommandSender {
 
             if (error != null) {
                 this.getLogger().throwing(error);
-                this.disconnect(new TranslationContainer("waterdog.downstream.initial.connect"));
+                this.disconnect(Component.text(new TranslationContainer("waterdog.downstream.initial.connect").getTranslated()));
                 return;
             }
 
@@ -189,7 +189,7 @@ public class ProxiedPlayer implements CommandSender {
         }
 
         if (initialServer == null) {
-            this.disconnect(new TranslationContainer("waterdog.no.initial.server"));
+            this.disconnect(Component.text(new TranslationContainer("waterdog.no.initial.server").getTranslated()));
             return;
         }
 
@@ -217,12 +217,12 @@ public class ProxiedPlayer implements CommandSender {
 
         ServerInfo targetServer = event.getTargetServer();
         if (this.clientConnection != null && this.clientConnection.getServerInfo() == targetServer) {
-            this.sendMessage(new TranslationContainer("waterdog.downstream.connected", targetServer.getServerName()));
+            this.sendMessage(Component.text(new TranslationContainer("waterdog.downstream.connected", targetServer.getServerName()).getTranslated()));
             return;
         }
 
         if (this.pendingServers.contains(targetServer)) {
-            this.sendMessage(new TranslationContainer("waterdog.downstream.connecting", targetServer.getServerName()));
+            this.sendMessage(Component.text(new TranslationContainer("waterdog.downstream.connecting", targetServer.getServerName()).getTranslated()));
             return;
         }
 
@@ -231,7 +231,7 @@ public class ProxiedPlayer implements CommandSender {
         ClientConnection connectingServer = this.getPendingConnection();
         if (connectingServer != null) {
             if (connectingServer.getServerInfo() == targetServer) {
-                this.sendMessage(new TranslationContainer("waterdog.downstream.connecting", targetServer.getServerName()));
+                this.sendMessage(Component.text(new TranslationContainer("waterdog.downstream.connecting", targetServer.getServerName()).getTranslated()));
                 return;
             } else {
                 connectingServer.disconnect();
@@ -308,9 +308,9 @@ public class ProxiedPlayer implements CommandSender {
         this.getLogger().error("[{}|{}] Unable to connect to downstream {}", this.getAddress(), this.getName(), targetServer.getServerName(), error);
         String exceptionMessage = Objects.requireNonNullElse(error.getLocalizedMessage(), error.getClass().getSimpleName());
         if (this.sendToFallback(targetServer, ReconnectReason.EXCEPTION, exceptionMessage)) {
-            this.sendMessage(new TranslationContainer("waterdog.connected.fallback", targetServer.getServerName()));
+            this.sendMessage(Component.text(new TranslationContainer("waterdog.connected.fallback", targetServer.getServerName()).getTranslated()));
         } else {
-            this.disconnect(new TranslationContainer("waterdog.downstream.transfer.failed", targetServer.getServerName(), exceptionMessage));
+            this.disconnect(Component.text(new TranslationContainer("waterdog.downstream.transfer.failed", targetServer.getServerName(), exceptionMessage).getTranslated()));
         }
     }
 
@@ -319,14 +319,6 @@ public class ProxiedPlayer implements CommandSender {
      */
     public void disconnect() {
         this.disconnect(Component.text(""));
-    }
-
-    public void disconnect(TextContainer message) {
-        if (message instanceof TranslationContainer) {
-            this.disconnect(Component.text(((TranslationContainer) message).getTranslated()));
-        } else {
-            this.disconnect(Component.text(message.getMessage()));
-        }
     }
 
     /**
@@ -399,7 +391,7 @@ public class ProxiedPlayer implements CommandSender {
     //  has to copy that piece of code. PLS: find a better place for this two methods
     public final void onDownstreamTimeout(ServerInfo serverInfo) {
         if (!this.sendToFallback(serverInfo, ReconnectReason.TIMEOUT, "Downstream Timeout")) {
-            this.disconnect(new TranslationContainer("waterdog.downstream.down", serverInfo.getServerName(), "Timeout"));
+            this.disconnect(Component.text(new TranslationContainer("waterdog.downstream.down", serverInfo.getServerName(), "Timeout").getTranslated()));
         }
     }
 
@@ -434,27 +426,12 @@ public class ProxiedPlayer implements CommandSender {
     }
 
     /**
-     * Sends a TextContainer as a message to a player
-     *
-     * @param message the text container to send, will be translated if instanceof TranslationContainer
-     */
-    @Override
-    public void sendMessage(TextContainer message) {
-        if (message instanceof TranslationContainer) {
-            this.sendTranslation((TranslationContainer) message);
-        } else {
-            this.sendMessage(message.getMessage());
-        }
-    }
-
-
-    /**
      * Submethod for sending a TranslationContainer to the player's chat window, translates the container and sends the result as a string
      *
      * @param textContainer the TranslationContainer to translate
      */
     public void sendTranslation(TranslationContainer textContainer) {
-        this.sendMessage(this.proxy.translate(textContainer));
+        this.sendMessage(Component.text(this.proxy.translate(textContainer)));
     }
 
     /**
@@ -463,15 +440,15 @@ public class ProxiedPlayer implements CommandSender {
      * @param message
      */
     @Override
-    public void sendMessage(String message) {
-        if (message.trim().isEmpty()) {
+    public void sendMessage(Component message) {
+        if (message.toString().trim().isEmpty()) {
             return; // Client wont accept empty string
         }
 
         TextPacket packet = new TextPacket();
         packet.setType(TextPacket.Type.RAW);
         packet.setXuid(this.getXuid());
-        packet.setMessage(Component.text(message));
+        packet.setMessage(message);
         this.sendPacket(packet);
     }
 

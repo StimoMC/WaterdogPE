@@ -95,7 +95,7 @@ public class SwitchDownstreamHandler extends AbstractDownstreamHandler {
     public PacketSignal handle(PlayStatusPacket packet) {
         return this.onPlayStatus(packet, message -> {
             this.connection.disconnect();
-            this.player.sendMessage(new TranslationContainer("waterdog.downstream.transfer.failed", this.connection.getServerInfo().getServerName(), message));
+            this.player.sendMessage(Component.text(new TranslationContainer("waterdog.downstream.transfer.failed", this.connection.getServerInfo().getServerName(), message).getMessage()));
         }, this.connection);
     }
 
@@ -123,7 +123,7 @@ public class SwitchDownstreamHandler extends AbstractDownstreamHandler {
         if (rewriteData.getTransferCallback() != null && rewriteData.getTransferCallback().getPhase() != TransferCallback.TransferPhase.RESET) {
             this.connection.disconnect();
             String serverName = this.connection.getServerInfo().getServerName();
-            this.player.sendMessage(new TranslationContainer("waterdog.downstream.connecting", serverName));
+            this.player.sendMessage(Component.text(new TranslationContainer("waterdog.downstream.connecting", serverName).getTranslated()));
             log.warn("[{}] Aborted server transfer to {} because player is already being transferred!", this.player.getName(), serverName);
             return Signals.CANCEL;
         }
@@ -233,7 +233,7 @@ public class SwitchDownstreamHandler extends AbstractDownstreamHandler {
         }
 
         this.connection.disconnect();
-        this.player.sendMessage(new TranslationContainer("waterdog.downstream.transfer.failed", this.connection.getServerInfo().getServerName(), packet.getKickMessage().toString()));
+        this.player.sendMessage(Component.text(new TranslationContainer("waterdog.downstream.transfer.failed", this.connection.getServerInfo().getServerName(), packet.getKickMessage().toString()).getTranslated()));
         return Signals.CANCEL;
     }
 }

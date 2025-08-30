@@ -18,6 +18,8 @@ package dev.waterdog.waterdogpe.command;
 import dev.waterdog.waterdogpe.ProxyServer;
 import dev.waterdog.waterdogpe.utils.types.TextContainer;
 import dev.waterdog.waterdogpe.utils.types.TranslationContainer;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class ConsoleCommandSender implements CommandSender {
 
@@ -43,21 +45,11 @@ public class ConsoleCommandSender implements CommandSender {
     }
 
     @Override
-    public void sendMessage(String message) {
-        for (String line : message.trim().split("\n")) {
+    public void sendMessage(Component message) {
+        String serializer = LegacyComponentSerializer.legacySection().serialize(message);;
+        for (String line : serializer.trim().split("\n")) {
             this.proxy.getLogger().info(line);
         }
-    }
-
-    @Override
-    public void sendMessage(TextContainer message) {
-        String msg;
-        if (message instanceof TranslationContainer) {
-            msg = ((TranslationContainer) message).getTranslated();
-        } else {
-            msg = message.getMessage();
-        }
-        this.sendMessage(msg);
     }
 
     @Override

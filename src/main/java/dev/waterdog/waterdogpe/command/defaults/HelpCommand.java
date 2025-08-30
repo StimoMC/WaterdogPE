@@ -20,6 +20,7 @@ import dev.waterdog.waterdogpe.command.CommandMap;
 import dev.waterdog.waterdogpe.command.CommandSender;
 import dev.waterdog.waterdogpe.command.CommandSettings;
 import dev.waterdog.waterdogpe.utils.types.TranslationContainer;
+import net.kyori.adventure.text.Component;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -64,12 +65,12 @@ public class HelpCommand extends Command {
             pageNumber = 1;
         }
 
-        sender.sendMessage(new TranslationContainer("waterdog.command.help.format", String.valueOf(pageNumber), String.valueOf(pages)));
+        sender.sendMessage(Component.text(new TranslationContainer("waterdog.command.help.format", String.valueOf(pageNumber), String.valueOf(pages)).getTranslated()));
 
         int i = 1;
         for (Command command : commands.values()) {
             if (i >= (pageNumber - 1) * pageHeight + 1 && i <= Math.min(commands.size(), pageNumber * pageHeight)) {
-                sender.sendMessage("§6" + commandMap.getCommandPrefix() + command.getName() + ": §r" + command.getDescription());
+                sender.sendMessage(Component.text("§6" + commandMap.getCommandPrefix() + command.getName() + ": §r" + command.getDescription()));
             }
             i++;
         }

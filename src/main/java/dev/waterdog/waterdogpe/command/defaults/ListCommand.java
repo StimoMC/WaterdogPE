@@ -21,6 +21,7 @@ import dev.waterdog.waterdogpe.command.CommandSettings;
 import dev.waterdog.waterdogpe.network.serverinfo.ServerInfo;
 import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 import dev.waterdog.waterdogpe.utils.types.TranslationContainer;
+import net.kyori.adventure.text.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -41,7 +42,7 @@ public class ListCommand extends Command {
     public boolean onExecute(CommandSender sender, String alias, String[] args) {
         if (args.length >= 1) {
             ServerInfo serverInfo = sender.getProxy().getServerInfo(args[0]);
-            sender.sendMessage(serverInfo == null ? "§cServer not found!" : this.buildServerList(serverInfo));
+            sender.sendMessage(Component.text(serverInfo == null ? "§cServer not found!" : this.buildServerList(serverInfo)));
             return true;
         }
 
@@ -54,7 +55,7 @@ public class ListCommand extends Command {
         }
 
         builder.append("§rTotal online players: ").append(sender.getProxy().getPlayers().size());
-        sender.sendMessage(builder.toString());
+        sender.sendMessage(Component.text(builder.toString()));
         return true;
     }
 

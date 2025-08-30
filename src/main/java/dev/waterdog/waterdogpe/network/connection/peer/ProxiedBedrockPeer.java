@@ -206,8 +206,8 @@ public class ProxiedBedrockPeer extends BedrockPeer {
         this.compressionStrategy = strategy;
     }
 
-    public void disconnect(String reason) {
-        this.sessions.values().forEach(session -> session.disconnect(Component.text(reason)));
+    public void disconnect(Component reason) {
+        this.sessions.values().forEach(session -> session.disconnect(reason));
         this.channel.eventLoop().schedule(() -> this.channel.close(), 200, TimeUnit.MILLISECONDS);
     }
 
@@ -240,7 +240,7 @@ public class ProxiedBedrockPeer extends BedrockPeer {
             }
         } catch (Exception e) {
             log.error("{} Exception caught in bedrock connection", ctx.channel().remoteAddress(), e);
-            this.disconnect("Internal error");
+            this.disconnect(Component.text("Internal error"));
         } finally {
             ReferenceCountUtil.release(msg);
         }
@@ -249,6 +249,6 @@ public class ProxiedBedrockPeer extends BedrockPeer {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error("{} Exception caught in bedrock connection", ctx.channel().remoteAddress(), cause);
-        this.disconnect("Internal error");
+        this.disconnect(Component.text("Internal error"));
     }
 }

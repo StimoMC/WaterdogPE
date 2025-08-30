@@ -21,6 +21,7 @@ import dev.waterdog.waterdogpe.command.CommandSettings;
 import dev.waterdog.waterdogpe.network.serverinfo.ServerInfo;
 import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 import dev.waterdog.waterdogpe.utils.types.TextContainer;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOverloadData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParamData;
@@ -44,7 +45,7 @@ public class ServerCommand extends Command {
 
         ServerInfo server = sender.getProxy().getServerInfo(args[0]);
         if (server == null) {
-            sender.sendMessage("§cServer not found!");
+            sender.sendMessage(Component.text("§cServer not found!"));
             return true;
         }
 
@@ -53,16 +54,16 @@ public class ServerCommand extends Command {
             player = (ProxiedPlayer) sender;
         } else {
             if (!sender.hasPermission("waterdog.command.server.permission.other")) {
-                sender.sendMessage(new TextContainer("§cYou don't have the permission to move other players."));
+                sender.sendMessage(Component.text("§cYou don't have the permission to move other players."));
                 return false;
             }
 
             player = sender.getProxy().getPlayer(args[1]);
             if (player == null) {
-                sender.sendMessage("§cPlayer not found!");
+                sender.sendMessage(Component.text("§cPlayer not found!"));
                 return true;
             }
-            sender.sendMessage(new TextContainer("§aPlayer {%0} was sent to {%1} server!", player.getName(), server.getServerName()));
+            sender.sendMessage(Component.text("§aPlayer" + player.getName() + " was sent to " + server.getServerName() + " server!"));
         }
 
         player.connect(server);

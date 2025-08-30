@@ -19,6 +19,7 @@ import dev.waterdog.waterdogpe.ProxyServer;
 import dev.waterdog.waterdogpe.command.Command;
 import dev.waterdog.waterdogpe.command.CommandSender;
 import dev.waterdog.waterdogpe.command.CommandSettings;
+import net.kyori.adventure.text.Component;
 
 public class EndCommand extends Command {
 
@@ -31,7 +32,7 @@ public class EndCommand extends Command {
 
     @Override
     public boolean onExecute(CommandSender sender, String alias, String[] args) {
-        sender.sendMessage("§aShutting down the proxy instance..");
+        sender.sendMessage(Component.text("§aShutting down the proxy instance.."));
         ProxyServer.getInstance().shutdown();
         return true;
     }
